@@ -7,7 +7,7 @@ import * as actions from '../actions/login'
 class Login extends Component{
 	render(){
 		return (
-			<LoginForm onLoginSubmit={this.props.actions.login}/>
+			<LoginForm onLoginSubmit={this.props.actions.login} loginUser={this.props.username}/>
 		)
 	}
 }
@@ -16,7 +16,7 @@ Login.propTypes={
 }
 function mapStateToProps(state){
 	return {
-		username:state.login
+		username:state.login_out
 	}
 }
 function mapActionsToProps(dispatch){

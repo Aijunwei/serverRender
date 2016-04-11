@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import {Link} from 'react-router'
+import {connect} from 'react-redux'
 
 
 /*const RouterApp=({children})=>(
@@ -14,10 +15,16 @@ class RouterApp extends Component{
 		return (
 		<div>
 		<h1>welcome</h1>
-		<Link to="/login">Login</Link>
+		{this.props.login?<Link to="/login">Login</Link>:<Link to="/login">Logout</Link>}
 		{this.props.children}
 		</div>	
 		);
 	}
 }
-export default RouterApp;
+function mapStateToProps(state){
+	console.log(!!state.login_out);
+	return {
+		login: !state.login_out
+	}
+}
+export default connect(mapStateToProps)(RouterApp);

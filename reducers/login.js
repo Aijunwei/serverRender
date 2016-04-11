@@ -1,9 +1,10 @@
 import {LOGIN,LOGOUT} from '../constants/login'
 const initialstate='';
 export default function login_out(state=initialstate,action){
+	console.log('state='+state);
 	switch(action.type){
 		case LOGIN:{
-			return login(action.username,action.password);
+			return action.username
 		}
 		case LOGOUT:{
 			return '';
@@ -18,8 +19,7 @@ function login(username,password){
 	if(username=='admin'&&password=='admin'){
 		return username;
 	}else{
-		return '';
 		alert('用户名或密码错误！');
-
+		return '';
 	}
 }

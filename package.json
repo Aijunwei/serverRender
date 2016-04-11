@@ -17,9 +17,10 @@
   },
   "homepage": "http://rackt.github.io/redux",
   "dependencies": {
-        "babel": "^5.8.21",
-            "ejs": "^2.3.4",
+    "babel": "^5.8.21",
     "classnames": "^2.1.2",
+    "ejs": "^2.3.4",
+    "mongoose": "^4.4.12",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
@@ -29,7 +30,6 @@
     "babel-core": "^5.6.18",
     "babel-loader": "^5.1.4",
     "babel-plugin-react-transform": "^1.1.0",
-   
     "babel-runtime": "^5.8.20",
     "expect": "^1.8.0",
     "express": "^4.13.3",
@@ -38,6 +38,7 @@
     "node-libs-browser": "^0.5.2",
     "raw-loader": "^0.5.1",
     "react-addons-test-utils": "^0.14.0",
+    "react-router": "^2.0.1",
     "react-transform-hmr": "^1.0.0",
     "style-loader": "^0.12.3",
     "todomvc-app-css": "^2.0.1",

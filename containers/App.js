@@ -9,7 +9,7 @@ const Actions=Object.assign(TodoActions,VisibilityActions);
 class App extends Component{
 	render(){
 		const {todos,actions,filter} =this.props;
-		console.log(todos);
+		console.log(actions);
 		return <div>
 			<Header addTodo={actions.addTodo}/>
 			<MainSection filter={filter} todos={todos} actions={actions}/>
@@ -24,6 +24,7 @@ App.propTypes={
 }
 
 function mapStateToProps(state){
+	console.log(state);
 	return {
 		todos:state.todos,
 		filter:state.filter

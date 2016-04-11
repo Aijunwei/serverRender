@@ -2,7 +2,7 @@ var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var config = require('./webpack.config')
-
+var url=require('url')
 var React = require('react')
 
 var reactRouter=require('react-router')
@@ -17,9 +17,17 @@ var port = 8000
 var routes=require('./routes')
 var path=require('path');
 var compiler = webpack(config)
+var Users=require('./models/Users');
+let store = configureStore({
+todos:[{
+	id:0,
+	completed:false,
+	text:'Use Redux',
+	editing:false
+}],
+filter:'show_all',
+login_out:''});
 
-let store = configureStore();
-console.log(routes);
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,11 +42,22 @@ app.get('*',function(req,res){
 		}else if(renderProps){
 			const markup=renderToString(<Provider store={store}><RouterContext {...renderProps}/></Provider>);
 			console.log(markup);
-			res.render('index', {markup});
+			let initialState=JSON.stringify(store.getState());
+			res.render('index', {markup,initialState});
 		}else{
+			
+			let pathname=url.parse(req.url).pathname
+			if(pathname=='/getUser'){
+				console.log(req.params);
+				Users.findByName('admin',function(err,obj){
+					console.log(obj);
+				});
+			}
 			res.status(404).send('Not Found');
 		}
 	});	
+
+
 })
 app.listen(port, function(error) {
   if (error) {

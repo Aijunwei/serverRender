@@ -4,6 +4,7 @@ const initialState=
 	SHOW_ALL;
 
 export default function visibilityFilter(state=initialState,action){
+console.log(action);
 	switch(action.type){
 		case SET_VISIBILITY_FILTER:
 			return action.filter;
