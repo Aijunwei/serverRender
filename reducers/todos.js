@@ -41,7 +41,7 @@ export default function todos(state=initialState,action){
 			return state.filter(todo=>todo.completed===false);
 		}
 		case EDITING:
-		console.log(action);
+		//console.log(action);
 			return state.map(todo => todo.id===action.id ? Object.assign({},todo,{editing:!todo.editing}):todo);
 		default :{
 			return state;

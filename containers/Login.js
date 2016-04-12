@@ -7,7 +7,7 @@ import * as actions from '../actions/login'
 class Login extends Component{
 	render(){
 		return (
-			<LoginForm onLoginSubmit={this.props.actions.login} loginUser={this.props.username}/>
+			<LoginForm onLoginSubmit={this.props.actions.loginAsync} loginUser={this.props.username}/>
 		)
 	}
 }

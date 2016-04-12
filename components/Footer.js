@@ -7,7 +7,7 @@ const FILTER_TITLES = {
   [SHOW_ACTIVE]: 'Active',
   [SHOW_COMPLETED]: 'Completed'
 }
-console.log(FILTER_TITLES);
+
 
 class Footer extends Component {
   renderTodoCount() {

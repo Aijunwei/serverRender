@@ -10,6 +10,7 @@ import configureStore from './store/configureStore'
 //import 'todomvc-app-css/index.css'
 import {Router,Route,IndexRoute, Link,browserHistory} from 'react-router'
 import routes from './routes'
+
 let initialState=window.__INITIAL_STATE__;
 let store = configureStore(initialState);
 

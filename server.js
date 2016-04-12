@@ -4,7 +4,9 @@ var webpackHotMiddleware = require('webpack-hot-middleware')
 var config = require('./webpack.config')
 var url=require('url')
 var React = require('react')
-
+var cookieParser = require('cookie-parser');
+var cookieSession=require('cookie-session');
+var session = require('express-session');
 var reactRouter=require('react-router')
 var match=reactRouter.match
 var RouterContext=reactRouter.RouterContext
@@ -18,6 +20,13 @@ var routes=require('./routes')
 var path=require('path');
 var compiler = webpack(config)
 var Users=require('./models/Users');
+var connect = require('connect');
+
+var SessionStore = require("session-mongoose")(connect);
+var sessioin_store = new SessionStore({
+	url: "mongodb://localhost/tododb",
+	interval: 120000
+});
 let store = configureStore({
 todos:[{
 	id:0,
@@ -30,34 +39,70 @@ login_out:''});
 
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))
-app.use(express.static(path.join(__dirname, 'public')));
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(cookieParser());
+app.use(session({
+secret : 'login',
+//store: sessioin_store,
+resave:false,
+saveUninitialized:true,
+cookie: { maxAge: 900000 }
+}));
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('*',function(req,res){
 	match({routes,location:req.url},(error,redirectLocation,renderProps)=>{
+
 		if(error){
 			res.status(500).send(error.message);
 		}else if(redirectLocation){
 			res.redirect(302,redirectLocation.pathname+redirectLocation.search);
 		}else if(renderProps){
 			const markup=renderToString(<Provider store={store}><RouterContext {...renderProps}/></Provider>);
-			console.log(markup);
 			let initialState=JSON.stringify(store.getState());
 			res.render('index', {markup,initialState});
 		}else{
-			
 			let pathname=url.parse(req.url).pathname
 			if(pathname=='/getUser'){
-				console.log(req.params);
-				Users.findByName('admin',function(err,obj){
-					console.log(obj);
-				});
+				if(!req.query.name){
+					res.set({'Content-Type':'text/json','Encodeing':'utf8'});
+					res.send({status:'OK',des:'参数缺失'});					
+				}else{
+					Users.findByName(req.query.name,function(err,obj){
+						res.set({'Content-Type':'text/json','Encodeing':'utf8'});
+						res.send({status:'OK',user:obj});
+					});					
+				}
+
+			}else if(pathname=='/doLogin'){
+				if(!req.query.name){
+					res.set({'Content-Type':'text/json','Encodeing':'utf8'});
+					res.status(400).send({status:'error',des:'用户名为空'});					
+				}else{
+					Users.findByName(req.query.name,function(err,obj){
+						res.set({'Content-Type':'text/json','Encodeing':'utf8'});
+						if(obj.name==req.query.name&&obj.password==req.query.password){
+							req.session.user={
+								name:obj.name
+							};
+
+							res.status(200).send({status:'OK',dev:'login'});
+
+						}else{
+							res.send({status:'error',des:'用户名或密码错误'});
+						}
+						
+					});					
+				}				
+			}else{
+				res.status(404).send('Not Found');
 			}
-			res.status(404).send('Not Found');
+			//res.status(404).send('Not Found');
 		}
 	});	
-
-
 })
 app.listen(port, function(error) {
   if (error) {

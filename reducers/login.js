@@ -4,7 +4,7 @@ export default function login_out(state=initialstate,action){
 	console.log('state='+state);
 	switch(action.type){
 		case LOGIN:{
-			return action.username
+			return action.username;
 		}
 		case LOGOUT:{
 			return '';
@@ -15,11 +15,3 @@ export default function login_out(state=initialstate,action){
 	}
 }
 
-function login(username,password){
-	if(username=='admin'&&password=='admin'){
-		return username;
-	}else{
-		alert('用户名或密码错误！');
-		return '';
-	}
-}

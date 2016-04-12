@@ -1,18 +1,29 @@
 import React,{Component,PropTypes} from 'react'
 import {Link} from 'react-router'
-
+import fetch from 'isomorphic-fetch'
 
 class LoginForm extends Component{
-	loginSubmit(username,password){
-		if(username=='admin'&&password=='admin'){
-			this.props.onLoginSubmit(username,password);
-			window.location='/main';
-
-		}else{
-			alert('username or password wrong');
-			window.location='/';
-		}
+/*	loginSubmit(username,password){
+		var self=this;
+		fetch(`/getUser?name=${username}`)
+		.then(function(reponse){
+			if(reponse.status>=400){
+				throw new Error('bad reponse from Server');
+			}
+			return reponse.json();
+		}).then(function(res){
+			if(res.user&&res.user.password==password){
+				self.props.onLoginSubmit(username);
+				window.location='/main';
+			}else{
+				alert('username or password wrong');
+				window.location='/';
+			}
+		});
 		
+	}*/
+	loginSubmit(username,password){
+		this.props.onLoginSubmit(username,password);
 	}
 	render(){
 

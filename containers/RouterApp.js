@@ -11,7 +11,7 @@ import {connect} from 'react-redux'
 );*/
 class RouterApp extends Component{
 	render(){
-		console.log(this.props.children);
+		//console.log(this.props.children);
 		return (
 		<div>
 		<h1>welcome</h1>
@@ -22,7 +22,7 @@ class RouterApp extends Component{
 	}
 }
 function mapStateToProps(state){
-	console.log(!!state.login_out);
+	//console.log(!!state.login_out);
 	return {
 		login: !state.login_out
 	}
