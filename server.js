@@ -46,7 +46,7 @@ app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.use(session({
 secret : 'login',
-//store: sessioin_store,
+store: sessioin_store,
 resave:false,
 saveUninitialized:true,
 cookie: { maxAge: 900000 }
@@ -55,7 +55,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('*',function(req,res){
 	match({routes,location:req.url},(error,redirectLocation,renderProps)=>{
-
+	if(req.session.user){
+		console.log('test2-session-='+req.session.user.name);
+	}
+	console.log('get server');
 		if(error){
 			res.status(500).send(error.message);
 		}else if(redirectLocation){
@@ -80,7 +83,7 @@ app.get('*',function(req,res){
 			}else if(pathname=='/doLogin'){
 				if(!req.query.name){
 					res.set({'Content-Type':'text/json','Encodeing':'utf8'});
-					res.status(400).send({status:'error',des:'用户名为空'});					
+					res.status(200).send({status:'error',des:'用户名为空'});					
 				}else{
 					Users.findByName(req.query.name,function(err,obj){
 						res.set({'Content-Type':'text/json','Encodeing':'utf8'});
@@ -88,8 +91,7 @@ app.get('*',function(req,res){
 							req.session.user={
 								name:obj.name
 							};
-
-							res.status(200).send({status:'OK',dev:'login'});
+							res.status(200).send({status:'OK',des:'login'});
 
 						}else{
 							res.send({status:'error',des:'用户名或密码错误'});
@@ -100,7 +102,6 @@ app.get('*',function(req,res){
 			}else{
 				res.status(404).send('Not Found');
 			}
-			//res.status(404).send('Not Found');
 		}
 	});	
 })
