@@ -79,7 +79,6 @@ app.get('*',function(req,res){
 						res.send({status:'OK',user:obj});
 					});					
 				}
-
 			}else if(pathname=='/doLogin'){
 				if(!req.query.name){
 					res.set({'Content-Type':'text/json','Encodeing':'utf8'});
